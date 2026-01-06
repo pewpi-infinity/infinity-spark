@@ -2,7 +2,7 @@ import { Website, Wallet } from '@/lib/types'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { ArrowLeft, Sparkle, Wallet as WalletIcon, Trophy } from '@phosphor-icons/react'
+import { ArrowLeft, Sparkle, Wallet as WalletIcon, Trophy, ArrowsLeftRight, Storefront } from '@phosphor-icons/react'
 import { WebsiteCard } from '@/components/WebsiteCard'
 import { SlotMachine } from '@/components/SlotMachine'
 import { Leaderboard } from '@/components/Leaderboard'
@@ -15,6 +15,8 @@ interface InfinityHubViewProps {
   onViewWebsite: (websiteId: string) => void
   onCreateWithSlot: (archetype: WorldArchetype, rarityMultiplier: number, slotCombination: string) => Promise<void>
   isCreating: boolean
+  onNavigateTrading?: () => void
+  onNavigateMarketplace?: () => void
 }
 
 export function InfinityHubView({ 
@@ -23,7 +25,9 @@ export function InfinityHubView({
   onBack, 
   onViewWebsite, 
   onCreateWithSlot,
-  isCreating 
+  isCreating,
+  onNavigateTrading,
+  onNavigateMarketplace
 }: InfinityHubViewProps) {
   const myWebsites = websites.filter(w => w.ownerWallet === wallet?.address)
   const sortedByValue = [...myWebsites].sort((a, b) => b.value - a.value)
@@ -36,7 +40,7 @@ export function InfinityHubView({
   return (
     <div className="min-h-screen p-6 md:p-12">
       <div className="max-w-7xl mx-auto space-y-8">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between flex-wrap gap-4">
           <Button
             variant="ghost"
             onClick={onBack}
@@ -46,15 +50,37 @@ export function InfinityHubView({
             Back to Entry
           </Button>
 
-          {wallet && wallet.infinityBalance !== undefined && (
-            <div className="flex items-center gap-4 px-4 py-2 cosmic-border rounded-lg bg-card/50">
-              <WalletIcon size={24} className="text-accent" />
-              <div className="flex flex-col">
-                <span className="text-xs text-muted-foreground">Balance</span>
-                <span className="text-lg font-bold">{wallet.infinityBalance.toLocaleString()} ∞</span>
+          <div className="flex items-center gap-3 flex-wrap">
+            {onNavigateMarketplace && (
+              <Button
+                variant="outline"
+                onClick={onNavigateMarketplace}
+                className="gap-2 cosmic-border"
+              >
+                <Storefront size={20} />
+                Marketplace
+              </Button>
+            )}
+            {onNavigateTrading && (
+              <Button
+                variant="outline"
+                onClick={onNavigateTrading}
+                className="gap-2 cosmic-border"
+              >
+                <ArrowsLeftRight size={20} />
+                World Trading
+              </Button>
+            )}
+            {wallet && wallet.infinityBalance !== undefined && (
+              <div className="flex items-center gap-4 px-4 py-2 cosmic-border rounded-lg bg-card/50">
+                <WalletIcon size={24} className="text-accent" />
+                <div className="flex flex-col">
+                  <span className="text-xs text-muted-foreground">Balance</span>
+                  <span className="text-lg font-bold">{wallet.infinityBalance.toLocaleString()} ∞</span>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
         <div className="text-center space-y-4">

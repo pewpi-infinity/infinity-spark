@@ -116,12 +116,28 @@ export interface MarketplaceListing {
 
 export interface Transaction {
   id: string
-  type: 'purchase' | 'sale' | 'listing' | 'delisting'
+  type: 'purchase' | 'sale' | 'listing' | 'delisting' | 'trade'
   websiteId: string
   from: string
   to: string
   amount: number
   timestamp: number
+  tradeDetails?: {
+    offeredWebsiteId: string
+    requestedWebsiteId: string
+  }
 }
 
-export type ViewMode = 'home' | 'website' | 'wallet' | 'marketplace' | 'builder'
+export interface TradeOffer {
+  id: string
+  offeredWebsiteId: string
+  requestedWebsiteId: string
+  offerorWallet: string
+  recipientWallet: string
+  status: 'pending' | 'accepted' | 'rejected' | 'cancelled'
+  createdAt: number
+  respondedAt?: number
+  expiresAt: number
+}
+
+export type ViewMode = 'home' | 'website' | 'wallet' | 'marketplace' | 'builder' | 'trading'

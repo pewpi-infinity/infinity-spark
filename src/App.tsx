@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useKV } from '@github/spark/hooks'
-import { Website, Wallet, ViewMode, Token, Page, Transaction } from '@/lib/types'
+import { Website, Wallet, ViewMode, Token, Page, Transaction, TradeOffer } from '@/lib/types'
 import { WorldArchetype } from '@/lib/worldTypes'
 import { 
   generateWebsiteId, 
@@ -18,6 +18,7 @@ import { InfinityHubView } from '@/components/views/InfinityHubView'
 import { WebsiteView } from '@/components/views/WebsiteView'
 import { WalletView } from '@/components/views/WalletView'
 import { MarketplaceView } from '@/components/views/MarketplaceView'
+import { TradingView } from '@/components/views/TradingView'
 import { Toaster } from '@/components/ui/sonner'
 import { toast } from 'sonner'
 
@@ -25,6 +26,7 @@ function App() {
   const [websites, setWebsites] = useKV<Website[]>('infinity-websites', [])
   const [wallet, setWallet] = useKV<Wallet | null>('infinity-wallet', null)
   const [transactions, setTransactions] = useKV<Transaction[]>('infinity-transactions', [])
+  const [tradeOffers, setTradeOffers] = useKV<TradeOffer[]>('infinity-trade-offers', [])
   
   const [viewMode, setViewMode] = useState<ViewMode>('home')
   const [selectedWebsiteId, setSelectedWebsiteId] = useState<string | null>(null)
@@ -505,6 +507,172 @@ function App() {
     setViewMode('builder')
   }
 
+  const handleNavigateTrading = () => {
+    setViewMode('trading')
+  }
+
+  const handleNavigateMarketplace = () => {
+    setViewMode('marketplace')
+  }
+
+  const handleCreateTradeOffer = (offeredWebsiteId: string, requestedWebsiteId: string) => {
+    if (!wallet) return
+
+    const offeredWebsite = websites?.find(w => w.id === offeredWebsiteId)
+    const requestedWebsite = websites?.find(w => w.id === requestedWebsiteId)
+
+    if (!offeredWebsite || !requestedWebsite) {
+      toast.error('Invalid websites selected')
+      return
+    }
+
+    if (offeredWebsite.ownerWallet !== wallet.address) {
+      toast.error('You can only trade websites you own')
+      return
+    }
+
+    const existingOffer = tradeOffers?.find(
+      offer => 
+        offer.offeredWebsiteId === offeredWebsiteId &&
+        offer.requestedWebsiteId === requestedWebsiteId &&
+        offer.status === 'pending'
+    )
+
+    if (existingOffer) {
+      toast.error('You already have a pending offer for this trade')
+      return
+    }
+
+    const newOffer: TradeOffer = {
+      id: `trade-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      offeredWebsiteId,
+      requestedWebsiteId,
+      offerorWallet: wallet.address,
+      recipientWallet: requestedWebsite.ownerWallet,
+      status: 'pending',
+      createdAt: Date.now(),
+      expiresAt: Date.now() + (7 * 24 * 60 * 60 * 1000)
+    }
+
+    setTradeOffers((current) => [...(current || []), newOffer])
+    toast.success('Trade offer sent!')
+  }
+
+  const handleAcceptTrade = (offerId: string) => {
+    if (!wallet) return
+
+    const offer = tradeOffers?.find(o => o.id === offerId)
+    if (!offer || offer.status !== 'pending') {
+      toast.error('Trade offer not found or already processed')
+      return
+    }
+
+    const offeredWebsite = websites?.find(w => w.id === offer.offeredWebsiteId)
+    const requestedWebsite = websites?.find(w => w.id === offer.requestedWebsiteId)
+
+    if (!offeredWebsite || !requestedWebsite) {
+      toast.error('One or both websites no longer exist')
+      return
+    }
+
+    setTradeOffers((current) =>
+      (current || []).map(o => 
+        o.id === offerId 
+          ? { ...o, status: 'accepted' as const, respondedAt: Date.now() }
+          : o
+      )
+    )
+
+    setWebsites((current) =>
+      (current || []).map(site => {
+        if (site.id === offer.offeredWebsiteId) {
+          return {
+            ...site,
+            ownerWallet: offer.recipientWallet,
+            collaborators: [
+              {
+                wallet: offer.recipientWallet,
+                role: 'owner',
+                addedAt: Date.now(),
+                addedBy: offer.recipientWallet
+              }
+            ]
+          }
+        }
+        if (site.id === offer.requestedWebsiteId) {
+          return {
+            ...site,
+            ownerWallet: offer.offerorWallet,
+            collaborators: [
+              {
+                wallet: offer.offerorWallet,
+                role: 'owner',
+                addedAt: Date.now(),
+                addedBy: offer.offerorWallet
+              }
+            ]
+          }
+        }
+        return site
+      })
+    )
+
+    setWallet((currentWallet) => {
+      if (!currentWallet) return null
+      return {
+        ...currentWallet,
+        tokens: (currentWallet.tokens || []).map(token => {
+          if (token.websiteId === offer.offeredWebsiteId) {
+            return { ...token, ownerWallet: offer.recipientWallet }
+          }
+          if (token.websiteId === offer.requestedWebsiteId) {
+            return { ...token, ownerWallet: offer.offerorWallet }
+          }
+          return token
+        })
+      }
+    })
+
+    const transaction: Transaction = {
+      id: generateTransactionId(),
+      type: 'trade',
+      websiteId: offer.offeredWebsiteId,
+      from: offer.offerorWallet,
+      to: offer.recipientWallet,
+      amount: 0,
+      timestamp: Date.now(),
+      tradeDetails: {
+        offeredWebsiteId: offer.offeredWebsiteId,
+        requestedWebsiteId: offer.requestedWebsiteId
+      }
+    }
+
+    setTransactions((current) => [...(current || []), transaction])
+    toast.success(`Trade completed! You received ${offeredWebsite.title}`)
+  }
+
+  const handleRejectTrade = (offerId: string) => {
+    setTradeOffers((current) =>
+      (current || []).map(o => 
+        o.id === offerId 
+          ? { ...o, status: 'rejected' as const, respondedAt: Date.now() }
+          : o
+      )
+    )
+    toast.success('Trade offer rejected')
+  }
+
+  const handleCancelTrade = (offerId: string) => {
+    setTradeOffers((current) =>
+      (current || []).map(o => 
+        o.id === offerId 
+          ? { ...o, status: 'cancelled' as const, respondedAt: Date.now() }
+          : o
+      )
+    )
+    toast.success('Trade offer cancelled')
+  }
+
   return (
     <div className="min-h-screen relative">
       <CosmicBackground />
@@ -526,6 +694,8 @@ function App() {
           onViewWebsite={handleViewWebsite}
           onCreateWithSlot={handleCreateWorld}
           isCreating={isCreating}
+          onNavigateTrading={handleNavigateTrading}
+          onNavigateMarketplace={handleNavigateMarketplace}
         />
       )}
 
@@ -558,6 +728,20 @@ function App() {
           onBack={handleBackToEntry}
           onViewWebsite={handleViewWebsite}
           onPurchase={handlePurchaseWebsite}
+        />
+      )}
+
+      {viewMode === 'trading' && (
+        <TradingView
+          websites={websites || []}
+          wallet={wallet || null}
+          tradeOffers={tradeOffers || []}
+          onBack={handleBackToEntry}
+          onCreateTradeOffer={handleCreateTradeOffer}
+          onAcceptTrade={handleAcceptTrade}
+          onRejectTrade={handleRejectTrade}
+          onCancelTrade={handleCancelTrade}
+          onViewWebsite={handleViewWebsite}
         />
       )}
     </div>
