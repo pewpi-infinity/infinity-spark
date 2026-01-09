@@ -106,8 +106,9 @@ export function DeploymentView({ website, allWebsites, onBack }: DeploymentViewP
         <div className="mb-8">
           <Card className="mb-6 p-4 bg-accent/10 border-accent/30">
             <p className="text-sm">
-              <strong>📦 Deployment Package Generated!</strong> Download the HTML files below and push them to your GitHub repository to make this world live on the web. 
-              Each world gets its own URL on GitHub Pages.
+              <strong>🌐 Source Engine Deployment</strong> - Infinity Spark is the single source of truth that births, indexes, and links all live webpages. 
+              Download the HTML files below and push them to <code className="bg-muted px-1.5 py-0.5 rounded text-xs">pewpi-infinity/infinity-spark</code> to make this world live on the web. 
+              The master index automatically includes all created worlds.
             </p>
           </Card>
 
@@ -142,16 +143,23 @@ export function DeploymentView({ website, allWebsites, onBack }: DeploymentViewP
                   </p>
                   
                   <div className="bg-background/80 p-4 rounded-lg mb-4">
-                    <div className="text-xs text-muted-foreground mb-2">📍 Recommended GitHub Pages structure:</div>
+                    <div className="text-xs text-muted-foreground mb-2">📍 Infinity Spark Source Repository:</div>
                     <div className="font-mono text-xs space-y-1">
-                      <div>Repository: <span className="text-accent">pewpi-infinity/infinity-spark</span></div>
-                      <div>Master Index: <span className="text-muted-foreground">/index.html</span></div>
-                      <div>This World: <span className="text-muted-foreground">/{website.id}/index.html</span></div>
+                      <div>Repository: <span className="text-accent font-semibold">pewpi-infinity/infinity-spark</span></div>
+                      <div className="text-muted-foreground mt-2">This is the single source of truth for all worlds</div>
                     </div>
                     <div className="mt-3 pt-3 border-t border-border/50">
-                      <div className="text-xs text-accent mb-1">🌐 Live URL (after GitHub Pages setup):</div>
-                      <div className="font-mono text-xs text-muted-foreground break-all">
-                        https://pewpi-infinity.github.io/infinity-spark/{website.id}/
+                      <div className="text-xs mb-1">📂 Repository Structure:</div>
+                      <div className="font-mono text-xs text-muted-foreground space-y-0.5">
+                        <div>/index.html <span className="text-accent">← Master Index (all worlds)</span></div>
+                        <div>/{website.id}/index.html <span className="text-accent">← This World</span></div>
+                      </div>
+                    </div>
+                    <div className="mt-3 pt-3 border-t border-border/50">
+                      <div className="text-xs text-accent mb-1">🌐 Live URLs (after GitHub Pages setup):</div>
+                      <div className="font-mono text-xs text-muted-foreground break-all space-y-0.5">
+                        <div>https://pewpi-infinity.github.io/infinity-spark/</div>
+                        <div>https://pewpi-infinity.github.io/infinity-spark/{website.id}/</div>
                       </div>
                     </div>
                   </div>
@@ -334,11 +342,14 @@ export function DeploymentView({ website, allWebsites, onBack }: DeploymentViewP
                 <div>
                   <h4 className="font-semibold mb-2 flex items-center gap-2">
                     <span className="flex items-center justify-center w-6 h-6 rounded-full bg-accent text-accent-foreground text-sm">2</span>
-                    Create/Clone GitHub Repository
+                    Access the Source Repository
                   </h4>
                   <div className="text-sm text-muted-foreground ml-8 space-y-2">
-                    <p>Repository name: <code className="bg-muted px-2 py-1 rounded font-mono text-xs">infinity-spark</code></p>
-                    <p className="text-xs">Suggested: Use <code className="bg-muted px-1 py-0.5 rounded">pewpi-infinity/infinity-spark</code> or your own username</p>
+                    <p>Repository: <code className="bg-muted px-2 py-1 rounded font-mono text-xs font-semibold text-accent">pewpi-infinity/infinity-spark</code></p>
+                    <p className="text-xs">This is the single source of truth where all Infinity worlds are born and indexed. Every page originates here.</p>
+                    <p className="text-xs mt-2">Clone or fork this repository to deploy your worlds:</p>
+                    <pre className="bg-muted p-2 rounded text-xs font-mono mt-1">
+git clone https://github.com/pewpi-infinity/infinity-spark.git</pre>
                   </div>
                 </div>
 

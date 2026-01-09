@@ -592,29 +592,38 @@ export function generateStaticHTML(website: Website): string {
     <p style="margin-top: 0.5rem; font-size: 0.875rem; color: oklch(0.65 0 0);">
       Token ID: ${website.tokenId} • Created: ${new Date(website.createdAt).toLocaleDateString()}
     </p>
+    <p style="margin-top: 1rem; font-size: 0.75rem;">
+      <a href="https://pewpi-infinity.github.io/infinity-spark/" style="color: oklch(0.75 0.15 85); text-decoration: none;">
+        🌐 View All Worlds
+      </a>
+      •
+      <a href="https://pewpi-infinity.github.io/infinity-spark-tour/" style="color: oklch(0.75 0.15 85); text-decoration: none;">
+        🚀 Live Reference System
+      </a>
+    </p>
   </footer>
 </body>
 </html>`
 }
 
 export function generateIndexBuilder(websites: Website[]): string {
-  const websiteLinks = websites
-    .sort((a, b) => b.createdAt - a.createdAt)
-    .map(site => `
-      <a href="./${site.id}/index.html" class="world-card">
-        <div class="world-header">
-          <h3>${site.title}</h3>
-          ${site.worldArchetype ? `<span class="archetype-badge">${site.worldArchetype}</span>` : ''}
-        </div>
-        <p class="world-description">${site.description}</p>
-        <div class="world-meta">
-          <span>💎 ${site.value.toLocaleString()} ∞</span>
-          <span>🔧 ${(site.tools || []).length} tools</span>
-          <span>📄 ${(site.pages || []).length} pages</span>
-        </div>
-        <div class="world-date">${new Date(site.createdAt).toLocaleDateString()}</div>
-      </a>
-    `).join('\n')
+  const sortedWebsites = websites.sort((a, b) => b.createdAt - a.createdAt)
+  
+  const websiteLinks = sortedWebsites.map(site => `
+    <a href="./${site.id}/index.html" class="world-card">
+      <div class="world-header">
+        <h3>${site.title}</h3>
+        ${site.worldArchetype ? `<span class="archetype-badge">${site.worldArchetype}</span>` : ''}
+      </div>
+      <p class="world-description">${site.description}</p>
+      <div class="world-meta">
+        <span>💎 ${site.value.toLocaleString()} ∞</span>
+        <span>🔧 ${(site.tools || []).length} tools</span>
+        <span>📄 ${(site.pages || []).length} pages</span>
+      </div>
+      <div class="world-date">${new Date(site.createdAt).toLocaleDateString()}</div>
+    </a>
+  `).join('\n')
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -622,6 +631,10 @@ export function generateIndexBuilder(websites: Website[]): string {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Infinity Spark - World Index</title>
+  <meta name="description" content="The single source engine that births, indexes, and links all live webpages. Every page originates here.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -635,6 +648,41 @@ export function generateIndexBuilder(websites: Website[]): string {
       color: oklch(0.95 0 0);
       min-height: 100vh;
       padding: 3rem 2rem;
+    }
+
+    .engine-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, oklch(0.35 0.15 290), oklch(0.25 0.08 270));
+      color: oklch(1 0 0);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+      border: 1px solid oklch(0.75 0.15 85 / 0.3);
+    }
+
+    .reference-link {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.75rem 1.5rem;
+      background: oklch(0.18 0.02 260 / 0.8);
+      border: 1px solid oklch(0.75 0.15 85 / 0.5);
+      border-radius: 12px;
+      color: oklch(0.75 0.15 85);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .reference-link:hover {
+      background: oklch(0.25 0.08 270);
+      border-color: oklch(0.75 0.15 85);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px oklch(0.75 0.15 85 / 0.3);
     }
 
     .container {
@@ -807,8 +855,15 @@ export function generateIndexBuilder(websites: Website[]): string {
 <body>
   <div class="container">
     <header>
+      <div class="engine-badge">🌐 Source Engine</div>
       <h1>∞ Infinity Spark</h1>
       <p class="subtitle">Turn Ideas Into Worlds</p>
+      <p style="max-width: 600px; margin: 0 auto 1rem; color: oklch(0.75 0 0); font-size: 0.95rem;">
+        The single source of truth that births, indexes, and links all live webpages. Every page originates here.
+      </p>
+      <a href="https://pewpi-infinity.github.io/infinity-spark-tour/" target="_blank" rel="noopener" class="reference-link">
+        🚀 Live Reference System
+      </a>
       <div class="stats">
         <div class="stat-item">
           <div class="stat-value">${websites.length}</div>
@@ -839,9 +894,15 @@ export function generateIndexBuilder(websites: Website[]): string {
     `}
 
     <footer>
-      <p>Powered by Infinity Spark</p>
+      <p style="font-weight: 600; margin-bottom: 0.5rem;">Powered by Infinity Spark — The Source Engine</p>
+      <p>The single source of truth that births, indexes, and links all live webpages</p>
       <p style="margin-top: 0.5rem; font-size: 0.875rem;">
         Each world is a live, functional website with its own tools and pages
+      </p>
+      <p style="margin-top: 1rem; font-size: 0.875rem;">
+        <a href="https://pewpi-infinity.github.io/infinity-spark-tour/" target="_blank" rel="noopener" style="color: oklch(0.75 0.15 85); text-decoration: none;">
+          🚀 Live Reference System
+        </a>
       </p>
     </footer>
   </div>
