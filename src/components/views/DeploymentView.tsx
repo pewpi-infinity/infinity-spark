@@ -428,6 +428,7 @@ git push origin main`}
                     <li>Push changes - your network grows automatically! 🌱</li>
                   </ol>
                 </div>
+              </div>
             </Card>
           </TabsContent>
         </Tabs>
