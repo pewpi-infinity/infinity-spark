@@ -11,6 +11,8 @@ interface InfinitySearchProps {
 
 export function InfinitySearch({ onSearch, isLoading = false, placeholder = 'What world will you build?', size = 'large' }: InfinitySearchProps) {
   const [query, setQuery] = useState('')
+  
+  console.log('🔍 InfinitySearch rendering, isLoading:', isLoading, 'query:', query)
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()

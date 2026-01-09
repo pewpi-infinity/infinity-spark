@@ -8,6 +8,8 @@ interface EntryViewProps {
 }
 
 export function EntryView({ onSearch, onEnterInfinity, isSearching }: EntryViewProps) {
+  console.log('✨ EntryView rendering, isSearching:', isSearching)
+  
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-6 relative">
       <button
