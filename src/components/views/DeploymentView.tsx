@@ -104,6 +104,13 @@ export function DeploymentView({ website, allWebsites, onBack }: DeploymentViewP
         </Button>
 
         <div className="mb-8">
+          <Card className="mb-6 p-4 bg-accent/10 border-accent/30">
+            <p className="text-sm">
+              <strong>📦 Deployment Package Generated!</strong> Download the HTML files below and push them to your GitHub repository to make this world live on the web. 
+              Each world gets its own URL on GitHub Pages.
+            </p>
+          </Card>
+
           <div className="flex items-start justify-between gap-4 flex-wrap">
             <div>
               <h1 className="text-4xl font-bold mb-2 flex items-center gap-3">
@@ -111,7 +118,7 @@ export function DeploymentView({ website, allWebsites, onBack }: DeploymentViewP
                 Deploy: {website.title}
               </h1>
               <p className="text-muted-foreground text-lg">
-                Static HTML files ready for GitHub Pages or any hosting service
+                Production-ready static HTML files for GitHub Pages or any web host
               </p>
             </div>
             <Button
@@ -129,14 +136,24 @@ export function DeploymentView({ website, allWebsites, onBack }: DeploymentViewP
               <div className="flex items-start gap-4">
                 <CheckCircle size={32} className="text-accent flex-shrink-0" />
                 <div className="flex-1">
-                  <h3 className="font-bold text-lg mb-2">Deployment Ready!</h3>
+                  <h3 className="font-bold text-lg mb-2">Deployment Package Ready!</h3>
                   <p className="text-sm text-muted-foreground mb-4">
-                    Your world has been packaged into static HTML files. Deploy them to any web hosting service.
+                    Your world has been packaged into production-ready static HTML files. Download and push to GitHub Pages for instant live deployment.
                   </p>
                   
                   <div className="bg-background/80 p-4 rounded-lg mb-4">
-                    <div className="text-xs text-muted-foreground mb-2 font-mono">Suggested repo path:</div>
-                    <div className="font-mono text-sm">pewpi-infinity/infinity-spark/{website.id}/index.html</div>
+                    <div className="text-xs text-muted-foreground mb-2">📍 Recommended GitHub Pages structure:</div>
+                    <div className="font-mono text-xs space-y-1">
+                      <div>Repository: <span className="text-accent">pewpi-infinity/infinity-spark</span></div>
+                      <div>Master Index: <span className="text-muted-foreground">/index.html</span></div>
+                      <div>This World: <span className="text-muted-foreground">/{website.id}/index.html</span></div>
+                    </div>
+                    <div className="mt-3 pt-3 border-t border-border/50">
+                      <div className="text-xs text-accent mb-1">🌐 Live URL (after GitHub Pages setup):</div>
+                      <div className="font-mono text-xs text-muted-foreground break-all">
+                        https://pewpi-infinity.github.io/infinity-spark/{website.id}/
+                      </div>
+                    </div>
                   </div>
 
                   {deployment.suggestions.length > 0 && (
@@ -298,7 +315,10 @@ export function DeploymentView({ website, allWebsites, onBack }: DeploymentViewP
 
           <TabsContent value="instructions">
             <Card className="p-6">
-              <h3 className="text-xl font-bold mb-4">Deployment Instructions</h3>
+              <h3 className="text-xl font-bold mb-2">GitHub Pages Deployment Guide</h3>
+              <p className="text-sm text-muted-foreground mb-6">
+                Follow these steps to publish your Infinity worlds to the web
+              </p>
               
               <div className="space-y-6">
                 <div>
@@ -307,75 +327,106 @@ export function DeploymentView({ website, allWebsites, onBack }: DeploymentViewP
                     Download Files
                   </h4>
                   <p className="text-sm text-muted-foreground ml-8">
-                    Download both the index.html (master list) and {website.id}-index.html (this world's page)
+                    Click "Download All Files" above to get both index.html (master list) and {website.id}-index.html (this world's page)
                   </p>
                 </div>
 
                 <div>
                   <h4 className="font-semibold mb-2 flex items-center gap-2">
                     <span className="flex items-center justify-center w-6 h-6 rounded-full bg-accent text-accent-foreground text-sm">2</span>
-                    Create Repository
+                    Create/Clone GitHub Repository
                   </h4>
-                  <p className="text-sm text-muted-foreground ml-8 mb-2">
-                    Create a GitHub repository named: <code className="bg-muted px-2 py-1 rounded">infinity-spark</code>
-                  </p>
+                  <div className="text-sm text-muted-foreground ml-8 space-y-2">
+                    <p>Repository name: <code className="bg-muted px-2 py-1 rounded font-mono text-xs">infinity-spark</code></p>
+                    <p className="text-xs">Suggested: Use <code className="bg-muted px-1 py-0.5 rounded">pewpi-infinity/infinity-spark</code> or your own username</p>
+                  </div>
                 </div>
 
                 <div>
                   <h4 className="font-semibold mb-2 flex items-center gap-2">
                     <span className="flex items-center justify-center w-6 h-6 rounded-full bg-accent text-accent-foreground text-sm">3</span>
-                    Organize Files
+                    Organize Files in Repository
                   </h4>
                   <div className="text-sm text-muted-foreground ml-8">
-                    <p className="mb-2">Create this structure:</p>
+                    <p className="mb-2">Create this exact structure:</p>
                     <pre className="bg-muted p-3 rounded text-xs font-mono">
 {`infinity-spark/
-├── index.html                (master index)
+├── index.html                (master index - lists all worlds)
 └── ${website.id}/
-    └── index.html            (this world)`}
+    └── index.html            (this world - ${website.title})`}
                     </pre>
+                    <p className="text-xs mt-2">💡 Rename {website.id}-index.html to just index.html when placing it in the folder</p>
                   </div>
                 </div>
 
                 <div>
                   <h4 className="font-semibold mb-2 flex items-center gap-2">
                     <span className="flex items-center justify-center w-6 h-6 rounded-full bg-accent text-accent-foreground text-sm">4</span>
-                    Enable GitHub Pages
+                    Push to GitHub
                   </h4>
-                  <p className="text-sm text-muted-foreground ml-8">
-                    Go to repository Settings → Pages → Set source to "main branch" → Save
-                  </p>
+                  <div className="text-sm text-muted-foreground ml-8">
+                    <p className="mb-2">Commit and push your files:</p>
+                    <pre className="bg-muted p-3 rounded text-xs font-mono">
+{`git add .
+git commit -m "Deploy ${website.title}"
+git push origin main`}
+                    </pre>
+                  </div>
                 </div>
 
                 <div>
                   <h4 className="font-semibold mb-2 flex items-center gap-2">
                     <span className="flex items-center justify-center w-6 h-6 rounded-full bg-accent text-accent-foreground text-sm">5</span>
-                    Access Your Sites
+                    Enable GitHub Pages
                   </h4>
                   <div className="text-sm text-muted-foreground ml-8">
-                    <p className="mb-2">Your sites will be live at:</p>
-                    <div className="bg-muted p-3 rounded space-y-2">
+                    <ol className="list-decimal list-inside space-y-1">
+                      <li>Go to repository Settings → Pages</li>
+                      <li>Set source to "Deploy from a branch"</li>
+                      <li>Select branch: <code className="bg-muted px-1 py-0.5 rounded text-xs">main</code></li>
+                      <li>Select folder: <code className="bg-muted px-1 py-0.5 rounded text-xs">/ (root)</code></li>
+                      <li>Click Save</li>
+                    </ol>
+                    <p className="mt-2 text-xs">⏱️ Pages will be live in 1-2 minutes</p>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="font-semibold mb-2 flex items-center gap-2">
+                    <span className="flex items-center justify-center w-6 h-6 rounded-full bg-accent text-accent-foreground text-sm">6</span>
+                    Access Your Live Sites
+                  </h4>
+                  <div className="text-sm text-muted-foreground ml-8">
+                    <p className="mb-3">Your worlds will be live at these URLs:</p>
+                    <div className="bg-muted p-4 rounded space-y-3">
                       <div>
-                        <div className="text-xs text-muted-foreground mb-1">Master Index:</div>
-                        <code className="text-xs">https://your-username.github.io/infinity-spark/</code>
+                        <div className="text-xs text-muted-foreground mb-1">🌐 Master Index (all worlds):</div>
+                        <code className="text-xs text-accent">https://your-username.github.io/infinity-spark/</code>
                       </div>
                       <div>
-                        <div className="text-xs text-muted-foreground mb-1">This World:</div>
-                        <code className="text-xs">https://your-username.github.io/infinity-spark/{website.id}/</code>
+                        <div className="text-xs text-muted-foreground mb-1">🌍 This World ({website.title}):</div>
+                        <code className="text-xs text-accent">https://your-username.github.io/infinity-spark/{website.id}/</code>
                       </div>
                     </div>
+                    <p className="text-xs mt-3">Replace "your-username" with your GitHub username</p>
                   </div>
                 </div>
 
                 <div className="bg-accent/10 border border-accent/30 p-4 rounded-lg">
                   <h5 className="font-semibold mb-2 flex items-center gap-2">
                     <Sparkle size={18} className="text-accent" />
-                    Pro Tip
+                    Growing Your Infinity Network
                   </h5>
-                  <p className="text-sm text-muted-foreground">
-                    Each time you create a new world, download its HTML and add it to your repository in a new folder. 
-                    Then download and update the index.html to keep your master list current!
+                  <p className="text-sm text-muted-foreground mb-2">
+                    Each time you create a new world in Infinity Spark:
                   </p>
+                  <ol className="text-sm text-muted-foreground list-decimal list-inside space-y-1 ml-2">
+                    <li>Click "Deploy to GitHub Pages" from the world view</li>
+                    <li>Download the new world's HTML file</li>
+                    <li>Add it to your repo in a new folder (e.g., /world-2/)</li>
+                    <li>Download and update the master index.html</li>
+                    <li>Push changes - your network grows automatically! 🌱</li>
+                  </ol>
                 </div>
               </div>
             </Card>
