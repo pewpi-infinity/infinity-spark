@@ -1,6 +1,6 @@
 # Planning Guide
 
-Infinity Spark is an educational game-world builder where learning feels like play, play creates assets, and assets have real value derived from function. Through a neural slot machine interface and 12 canonical world types, users create playable learning environments that are also tradable tokens.
+Infinity Spark is an educational game-world builder where learning feels like play, play creates assets, and assets have real value derived from function. Through a neural slot machine interface and 12 canonical world types, users create playable learning environments that are also tradable tokens. Each search deploys a live website with static HTML ready for GitHub Pages hosting.
 
 **Experience Qualities**:
 1. **Play as Learning** - Educational concepts emerge through game mechanics, interactive worlds, and discovery-driven exploration
@@ -8,7 +8,7 @@ Infinity Spark is an educational game-world builder where learning feels like pl
 3. **Function as Value** - Assets gain worth through uniqueness, reusability, tool diversity, and time spent building (not idle)
 
 **Complexity Level**: Complex Application (advanced functionality, likely with multiple views)
-This is a playful learning platform with 12 world archetypes (physics playgrounds, logic gyms, research libraries, quantum visualizers, dreamscape architects, etc.), neural slot-machine creation, game-script recombination, and an emulator separation model. Users build educational game-worlds that teach through interaction while generating tradable tokens. The system enforces originality through anti-clone mechanics and values creation over replication.
+This is a playful learning platform with 12 world archetypes (physics playgrounds, logic gyms, research libraries, quantum visualizers, dreamscape architects, etc.), neural slot-machine creation, game-script recombination, and an emulator separation model. Users build educational game-worlds that teach through interaction while generating tradable tokens. Every website is automatically deployable as static HTML to GitHub Pages with an index builder showing all created worlds. The system enforces originality through anti-clone mechanics and values creation over replication.
 
 ## Essential Features
 
@@ -123,6 +123,13 @@ This is a playful learning platform with 12 world archetypes (physics playground
 - **Trigger**: App loads with guest access enabled
 - **Progression**: Load app → Browse as guest → View worlds → Explore tools → Attempt to create → Login prompt → Authenticate → Creation unlocked
 - **Success criteria**: Zero auth screens on load, all viewing works as guest, creation/editing properly gated, smooth auth when needed
+
+### 17. GitHub Pages Deployment System
+- **Functionality**: Every created world automatically generates deployable static HTML files with embedded tools, plus a master index page listing all worlds
+- **Purpose**: Give users real ownership by letting them deploy their worlds to actual live websites on GitHub Pages or any hosting service
+- **Trigger**: User clicks "Deploy to GitHub Pages" button from any world view
+- **Progression**: Click deploy → System generates static HTML with all tools rendered → Show deployment view with copy/download options → Display master index HTML → Provide step-by-step GitHub Pages setup instructions → User downloads files → User uploads to GitHub repo → Site goes live
+- **Success criteria**: HTML is fully functional without backend, all tools render properly (video players, charts, galleries, calculators), index page lists all worlds with stats, deployment instructions are clear, files download correctly, sites work on any static host
 
 ## Edge Case Handling
 
