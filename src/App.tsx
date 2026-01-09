@@ -24,6 +24,7 @@ import { Toaster } from '@/components/ui/sonner'
 import { toast } from 'sonner'
 
 function App() {
+  console.log('🚀 App initializing...')
   const [websites, setWebsites] = useKV<Website[]>('infinity-websites', [])
   const [wallet, setWallet] = useKV<Wallet | null>('infinity-wallet', null)
   const [transactions, setTransactions] = useKV<Transaction[]>('infinity-transactions', [])
@@ -678,6 +679,8 @@ function App() {
     )
     toast.success('Trade offer cancelled')
   }
+
+  console.log('🎨 Rendering App, viewMode:', viewMode)
 
   return (
     <div className="min-h-screen relative">
