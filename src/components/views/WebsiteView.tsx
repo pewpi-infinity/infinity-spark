@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { formatValue, formatWalletAddress, formatDate } from '@/lib/generators'
-import { ArrowLeft, Crown, Eye, EyeSlash, Plus, Tag, Users, UserPlus, X, Wrench } from '@phosphor-icons/react'
+import { ArrowLeft, Crown, Eye, EyeSlash, Plus, Tag, Users, UserPlus, X, Wrench, Upload } from '@phosphor-icons/react'
 import { useState } from 'react'
 import { marked } from 'marked'
 import { toast } from 'sonner'
@@ -24,6 +24,7 @@ interface WebsiteViewProps {
   onUnlistFromSale?: (websiteId: string) => void
   onAddCollaborator?: (websiteId: string, wallet: string, role: 'editor' | 'viewer') => void
   onRemoveCollaborator?: (websiteId: string, wallet: string) => void
+  onDeploy?: (websiteId: string) => void
 }
 
 export function WebsiteView({ 
@@ -35,7 +36,8 @@ export function WebsiteView({
   onListForSale,
   onUnlistFromSale,
   onAddCollaborator,
-  onRemoveCollaborator
+  onRemoveCollaborator,
+  onDeploy
 }: WebsiteViewProps) {
   const [builderVisible, setBuilderVisible] = useState(isOwned)
   const [selectedPage, setSelectedPage] = useState<Page | null>(null)
@@ -190,6 +192,15 @@ export function WebsiteView({
                       Show Builder
                     </>
                   )}
+                </Button>
+
+                <Button
+                  variant="default"
+                  onClick={() => onDeploy?.(website.id)}
+                  className="gap-2 cosmic-glow"
+                >
+                  <Upload size={20} />
+                  Deploy to GitHub Pages
                 </Button>
               </>
             )}

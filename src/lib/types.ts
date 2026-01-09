@@ -140,4 +140,4 @@ export interface TradeOffer {
   expiresAt: number
 }
 
-export type ViewMode = 'home' | 'website' | 'wallet' | 'marketplace' | 'builder' | 'trading'
+export type ViewMode = 'home' | 'website' | 'wallet' | 'marketplace' | 'builder' | 'trading' | 'deploy'

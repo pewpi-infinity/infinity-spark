@@ -1,14 +1,14 @@
 # Planning Guide
 
-Infinity Spark is an educational game-world builder where learning feels like play, play creates assets, and assets have real value derived from function. Through a neural slot machine interface and 12 canonical world types, users create playable learning environments that are also tradable tokens.
+Infinity Spark is the **single source engine** that births, indexes, and deploys all live webpages. Every page created originates from this application and is automatically deployed as production-ready static HTML to GitHub Pages. The app functions as a publishing engine where the index is memory, pages are offspring, and input is fuel. Users search to create worlds that immediately become live websites with functional tools, auto-linked into a master index that grows organically.
 
 **Experience Qualities**:
-1. **Play as Learning** - Educational concepts emerge through game mechanics, interactive worlds, and discovery-driven exploration
-2. **Neural Creation** - Slot machine interface combines user intent with behavior signals (timing, cursor movement, hesitation) to generate unique world combinations
-3. **Function as Value** - Assets gain worth through uniqueness, reusability, tool diversity, and time spent building (not idle)
+1. **Publishing Engine, Not Page** - Infinity Spark generates real websites, not demos. Each search creates a deployable HTML page with live tools
+2. **Auto-Indexed Growth** - Every creation automatically appears in the master index which expands as a living directory
+3. **Production-First** - No staging, no previews. Pages deploy with functional components immediately or fail loudly
 
 **Complexity Level**: Complex Application (advanced functionality, likely with multiple views)
-This is a playful learning platform with 12 world archetypes (physics playgrounds, logic gyms, research libraries, quantum visualizers, dreamscape architects, etc.), neural slot-machine creation, game-script recombination, and an emulator separation model. Users build educational game-worlds that teach through interaction while generating tradable tokens. The system enforces originality through anti-clone mechanics and values creation over replication.
+This is a web publishing engine disguised as a playful world-builder. Users search to create, and each search births a production-ready static HTML page with embedded functional tools (video players, charts, timelines, calculators, etc.). Every page is deployed to GitHub Pages under pewpi-infinity/infinity-spark with automatic index generation. The system ensures no orphan pages exist - everything links back to the master index which serves as the living directory of all created worlds. Pages must load with working components on first render or the build fails.
 
 ## Essential Features
 
@@ -123,6 +123,20 @@ This is a playful learning platform with 12 world archetypes (physics playground
 - **Trigger**: App loads with guest access enabled
 - **Progression**: Load app → Browse as guest → View worlds → Explore tools → Attempt to create → Login prompt → Authenticate → Creation unlocked
 - **Success criteria**: Zero auth screens on load, all viewing works as guest, creation/editing properly gated, smooth auth when needed
+
+### 17. GitHub Pages Deployment System (Source Engine)
+- **Functionality**: Infinity Spark is the single source of truth that births, indexes, and deploys all live webpages. Every creation originates here and deploys as static HTML to pewpi-infinity/infinity-spark. The master index auto-updates to link all created worlds.
+- **Purpose**: Make Infinity Spark the publishing engine, not just a page. Pages are offspring, index is memory, input is fuel. No orphan pages exist - everything links back.
+- **Trigger**: Every world creation automatically generates deployment-ready HTML; user clicks "Deploy" to download
+- **Progression**: Create world → Static HTML generated with all tools → Master index updated automatically → User downloads files → Push to pewpi-infinity/infinity-spark → Pages go live → Index shows all worlds
+- **Success criteria**: Every page originates from this app, HTML is fully functional without backend, tools render properly on first load, index auto-updates with each creation, clear GitHub structure (index.html at root, worlds in folders), deployment instructions guide to pewpi-infinity/infinity-spark repo, sites work immediately on GitHub Pages
+
+### 18. Living Index System (Growth Surface)
+- **Functionality**: The master index.html functions as a living directory that auto-expands as input increases, showing all created pages organized into sections (Pages, Widgets, Media, Tools, Experiments, Archives)
+- **Purpose**: Create a navigation hub that grows organically with creation, not a static landing page
+- **Trigger**: Updates automatically on every world creation
+- **Progression**: World created → Index regenerated with new link → Categorized into appropriate section → Stats updated (total worlds, tools, value) → Download shows current state
+- **Success criteria**: Index is always current, categories auto-expand, new content appears immediately, serves as true directory not placeholder, visually represents growth
 
 ## Edge Case Handling
 

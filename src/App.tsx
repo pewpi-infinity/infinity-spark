@@ -19,10 +19,12 @@ import { WebsiteView } from '@/components/views/WebsiteView'
 import { WalletView } from '@/components/views/WalletView'
 import { MarketplaceView } from '@/components/views/MarketplaceView'
 import { TradingView } from '@/components/views/TradingView'
+import { DeploymentView } from '@/components/views/DeploymentView'
 import { Toaster } from '@/components/ui/sonner'
 import { toast } from 'sonner'
 
 function App() {
+  console.log('🚀 App initializing...')
   const [websites, setWebsites] = useKV<Website[]>('infinity-websites', [])
   const [wallet, setWallet] = useKV<Wallet | null>('infinity-wallet', null)
   const [transactions, setTransactions] = useKV<Transaction[]>('infinity-transactions', [])
@@ -515,6 +517,11 @@ function App() {
     setViewMode('marketplace')
   }
 
+  const handleNavigateDeploy = (websiteId: string) => {
+    setSelectedWebsiteId(websiteId)
+    setViewMode('deploy')
+  }
+
   const handleCreateTradeOffer = (offeredWebsiteId: string, requestedWebsiteId: string) => {
     if (!wallet) return
 
@@ -673,6 +680,8 @@ function App() {
     toast.success('Trade offer cancelled')
   }
 
+  console.log('🎨 Rendering App, viewMode:', viewMode)
+
   return (
     <div className="min-h-screen relative">
       <CosmicBackground />
@@ -710,6 +719,7 @@ function App() {
           onUnlistFromSale={handleUnlistFromSale}
           onAddCollaborator={handleAddCollaborator}
           onRemoveCollaborator={handleRemoveCollaborator}
+          onDeploy={handleNavigateDeploy}
         />
       )}
 
@@ -742,6 +752,14 @@ function App() {
           onRejectTrade={handleRejectTrade}
           onCancelTrade={handleCancelTrade}
           onViewWebsite={handleViewWebsite}
+        />
+      )}
+
+      {viewMode === 'deploy' && selectedWebsite && (
+        <DeploymentView
+          website={selectedWebsite}
+          allWebsites={websites || []}
+          onBack={handleBackToEntry}
         />
       )}
     </div>
