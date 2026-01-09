@@ -419,7 +419,7 @@ git push origin main`}
                   </h5>
                   <p className="text-sm text-muted-foreground mb-2">
                     Each time you create a new world in Infinity Spark:
-                  <ol className="text-sm text-muted-foreground list-decimal list-inside space-y-1 ml-2">
+                  </p>
                   <ol className="text-sm text-muted-foreground list-decimal list-inside space-y-1 ml-2">
                     <li>Click "Deploy to GitHub Pages" from the world view</li>
                     <li>Download the new world's HTML file</li>
@@ -427,6 +427,7 @@ git push origin main`}
                     <li>Download and update the master index.html</li>
                     <li>Push changes - your network grows automatically! 🌱</li>
                   </ol>
+                </div>
               </div>
             </Card>
           </TabsContent>
